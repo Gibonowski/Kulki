@@ -176,20 +176,27 @@ class Game(ShowBase):
         return Task.cont
 
     def grabPiece(self):
-        # If a square is highlighted and it has a piece, set it to dragging
-        # mode
         if self.highlited is not False and self.balls[self.highlited]:
             self.dragging = self.highlited
+            # Jeśli nic nie zaznaczone to zaznacz
             if(not self.isSelected):
                 self.squares[self.highlited].setColor(HIGHLIGHT)
                 self.selected =  self.highlited
                 self.isSelected = True
 
-            # musze tu jakoś rozjebać odnaczanie
+            # Jeśli zaznaczone
             else:
-                self.squares[self.highlited].setColor(SquareColor(self.highlited))
-                self.highlited = False
-                self.isSelected = False
+                # Odznaczanie
+                if self.highlited == self.selected:
+                    print SquareColor(self.highlited)
+                    self.squares[self.highlited].setColor(SquareColor(self.highlited))
+                    self.highlited = False
+                    self.isSelected = False
+                    self.selected = None
+                # Tutaj bedzie potrzebne jeszcze:
+                # -Zmiana zaznaczenia na inną piłę
+                # -Jesli w psute pole to cala logika
+                # gry czli animacja itp
 
     def releasePiece(self):
         # Letting go of a piece. If we are not on a square, return it to its original
