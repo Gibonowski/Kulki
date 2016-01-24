@@ -177,26 +177,38 @@ class Game(ShowBase):
 
     def grabPiece(self):
         if self.highlited is not False and self.balls[self.highlited]:
-            self.dragging = self.highlited
+            #self.dragging = self.highlited
             # Jeśli nic nie zaznaczone to zaznacz
-            if(not self.isSelected):
-                self.squares[self.highlited].setColor(HIGHLIGHT)
+            if not self.isSelected:
                 self.selected =  self.highlited
                 self.isSelected = True
+
+            # Zmiana zaznaczenia na inną kulkę
+            elif self.isSelected and self.selected is not self.highlited:
+                self.squares[self.selected].setColor(SquareColor(self.selected))
+                self.selected = self.highlited
 
             # Jeśli zaznaczone
             else:
                 # Odznaczanie
                 if self.highlited == self.selected:
-                    print SquareColor(self.highlited)
                     self.squares[self.highlited].setColor(SquareColor(self.highlited))
+
                     self.highlited = False
                     self.isSelected = False
                     self.selected = None
-                # Tutaj bedzie potrzebne jeszcze:
-                # -Zmiana zaznaczenia na inną piłę
-                # -Jesli w psute pole to cala logika
-                # gry czli animacja itp
+
+        # Przemieszczenie kulki
+        else:
+            if self.isSelected and self.empty[self.highlited]:
+                self.empty[self.selected] = True
+                self.empty[self.highlited] = False
+                self.squares[self.selected].setColor(SquareColor(self.selected))
+                self.balls[self.selected].model.setPos(SquarePos(self.highlited))
+                self.balls[self.highlited] = self.balls[self.selected]
+                self.balls[self.selected] = None
+                self.isSelected = False
+                self.selected = None
 
     def releasePiece(self):
         # Letting go of a piece. If we are not on a square, return it to its original
