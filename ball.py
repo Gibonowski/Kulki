@@ -7,6 +7,7 @@ class Ball(object):
         self.model.setColor(color)
         self.model.setPos(position)
         self.model.setScale(scale)
+        self.color = color
 
     def resize(self, x, y,z):
         self.model.setScale(x, y, z)
